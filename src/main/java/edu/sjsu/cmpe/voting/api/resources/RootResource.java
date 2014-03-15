@@ -1,20 +1,33 @@
-/**
- * 
- */
 package edu.sjsu.cmpe.voting.api.resources;
 
-/**
- * @author Vijaylakshmi
- *
- */
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.yammer.metrics.annotation.Timed;
+
+import edu.sjsu.cmpe.voting.dto.LinkDto;
+
+
+@Path("/v1/")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class RootResource {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+    public RootResource() {
+	// do nothing
+    }
 
-	}
+    @GET
+    @Timed(name = "get-root")
+    public Response getRoot() {
+	LinkDto links = new LinkDto();
+	
 
+	return Response.ok(links).build();
+    }
 }
+
