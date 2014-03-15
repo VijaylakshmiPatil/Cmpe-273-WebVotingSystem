@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 
 import com.yammer.metrics.annotation.Timed;
 
+import edu.sjsu.cmpe.voting.dto.LinksDto;
 import edu.sjsu.cmpe.voting.dto.LinkDto;
 
 
@@ -24,10 +25,10 @@ public class RootResource {
     @GET
     @Timed(name = "get-root")
     public Response getRoot() {
-	LinkDto links = new LinkDto();
-	
+    	LinksDto links = new LinksDto();
+    	links.addLink(new LinkDto("create-poll", "/poll", "POST"));
 
-	return Response.ok(links).build();
+    	return Response.ok(links).build();
     }
 }
 
