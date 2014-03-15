@@ -17,4 +17,14 @@ public class Poll {
 
 	}
 
+	
+
+	
+
+
+	public String uniqueKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
