@@ -57,15 +57,4 @@ public class Poll {
     	return sb.toString();
     }
 
-
-	
-
-	
-
-
-	public String uniqueKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
