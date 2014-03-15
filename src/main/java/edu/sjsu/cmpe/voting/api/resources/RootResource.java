@@ -9,8 +9,9 @@ import javax.ws.rs.core.Response;
 
 import com.yammer.metrics.annotation.Timed;
 
-import edu.sjsu.cmpe.voting.dto.LinksDto;
 import edu.sjsu.cmpe.voting.dto.LinkDto;
+import edu.sjsu.cmpe.voting.dto.LinksDto;
+
 
 
 @Path("/v1/")
