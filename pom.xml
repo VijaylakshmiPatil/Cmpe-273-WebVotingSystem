@@ -96,7 +96,7 @@
 									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>edu.sjsu.cmpe.library.LibraryService</mainClass>
+									<mainClass>edu.sjsu.cmpe.voting.VotingService</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
@@ -105,7 +105,7 @@
 			</plugin>
 			<plugin>
 				<!-- You'll probably want to remove this for your project. I'm just using 
-					it here so that dropwizard-example doesn't get deployed as a library. -->
+					it here so that dropwizard-example doesn't get deployed as a voting. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.7</version>
