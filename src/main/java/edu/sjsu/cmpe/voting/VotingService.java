@@ -27,8 +27,9 @@ public class VotingService extends Service<VotingServiceConfiguration> {
 	@Override
 	public void run(VotingServiceConfiguration configuration,
 			Environment environment) throws Exception {
-		/** Root API */
+		/**Root API */
 		environment.addResource(RootResource.class);
+		/** Poll APIs */
 		VotingRepositoryInterface voteRepository = new VotingRepository(
 				new ConcurrentHashMap<String, Poll>());
 			environment.addResource(new VoteResource(voteRepository));

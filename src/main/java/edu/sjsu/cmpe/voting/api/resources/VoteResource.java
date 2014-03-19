@@ -33,6 +33,12 @@ import edu.sjsu.cmpe.voting.repository.VotingRepositoryInterface;
 @Consumes(MediaType.APPLICATION_JSON)
 public class VoteResource {
 	private final VotingRepositoryInterface voteRepository;
+	/**
+     * VoteResource constructor
+     * 
+     * @param voteRepository
+     *            a VoteRepository instance
+     */
 
 	public VoteResource(VotingRepositoryInterface voteRepository) {
 		this.voteRepository = voteRepository;

@@ -1,8 +1,5 @@
 package edu.sjsu.cmpe.voting.dto;
 
-
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +16,11 @@ public class LinksDto {
     public List<LinkDto> getLinks() {
 	return links;
     }
-
     /**
      * @param links
      *            the links to set
      */
+   
     public void setLinks(List<LinkDto> links) {
 	this.links = links;
     }

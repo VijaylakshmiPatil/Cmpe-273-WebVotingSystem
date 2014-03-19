@@ -3,6 +3,14 @@ package edu.sjsu.cmpe.voting.repository;
 import edu.sjsu.cmpe.voting.domain.Poll;
 
 public interface VotingRepositoryInterface {
+	
+	/**
+     * Save a new poll in the repository
+     * 
+     * @param newPoll
+     *            
+     * @return a newly created poll
+     */
 
 	Poll savePoll(Poll newPoll);
 
