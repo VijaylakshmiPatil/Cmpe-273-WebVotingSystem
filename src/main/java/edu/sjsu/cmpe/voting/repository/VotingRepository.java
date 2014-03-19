@@ -20,9 +20,12 @@ public class VotingRepository implements VotingRepositoryInterface {
 	/** In-memory map to store polls. (Key, Value) -> (PollKey, Poll) */
 	private final ConcurrentHashMap<String, Poll> pollInMemoryMap;
 	static Random rnd;
+	// Characters used to generate unique 4 letter key.
 	static final String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	// Key to be generated and associated with every poll question 
 	private long pollKey;
 
+	/** Constructor to create a Voting Repository */
 	public VotingRepository(ConcurrentHashMap<String, Poll> pollMap) {
 		checkNotNull(pollMap, "bookMap must not be null for BookRepository");
 		pollInMemoryMap = pollMap;
@@ -36,6 +39,8 @@ public class VotingRepository implements VotingRepositoryInterface {
 	private final String generatePollKey() {
 		int len = 4;
 		rnd = new Random();
+		
+		// Building a key of length 4.
     	StringBuilder sb = new StringBuilder(len);
     	for(int i=0; i<len; i++)
     		sb.append(characters.charAt(rnd.nextInt(characters.length())));
@@ -75,12 +80,12 @@ public class VotingRepository implements VotingRepositoryInterface {
 	    	checkNotNull(key, "Key instance cannot be null");
 	    	Poll poll = pollInMemoryMap.get(key);
 	    	checkNotNull(poll, "Poll instance cannot be null");
-	    	// Option 1 selection (Yes)
+	    	// Option 1 selection (Yes) Incrementing the option count by 1, everytime it is selected
 	    	if(answer.equalsIgnoreCase(poll.getOption1())){
 	    		int count = poll.getOption1Count();
 	    		poll.setOption1Count(++count);
 	    	}
-	    	// Option 2 selection (No)
+	    	// Option 2 selection (No) Incrementing the option count by 1, everytime it is selected
 	    	else if(answer.equalsIgnoreCase(poll.getOption2())){
 	    		int count = poll.getOption2Count();
 	    		System.out.println("Count="+count);
