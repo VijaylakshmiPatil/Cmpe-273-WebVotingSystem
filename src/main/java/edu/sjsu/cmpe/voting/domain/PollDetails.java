@@ -3,6 +3,10 @@
  */
 package edu.sjsu.cmpe.voting.domain;
 
+
+/**
+ * Wrapper class for Poll
+ */
 public class PollDetails {
 
 	private String uniqueKey;

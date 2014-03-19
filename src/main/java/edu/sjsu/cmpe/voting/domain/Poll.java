@@ -82,7 +82,7 @@ public class Poll {
 
 	/**
 	 * @param option1
-	 *            the option1 to set
+	 *            the option1 to set (Yes)
 	 */
 	public void setOption1(String option1) {
 		this.option1 = option1;
@@ -97,7 +97,7 @@ public class Poll {
 
 	/**
 	 * @param option2
-	 *            the option2 to set
+	 *            the option2 to set (No)
 	 */
 	public void setOption2(String option2) {
 		this.option2 = option2;
