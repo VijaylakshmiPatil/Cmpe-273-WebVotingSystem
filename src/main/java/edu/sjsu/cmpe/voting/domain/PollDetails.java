@@ -3,15 +3,24 @@
  */
 package edu.sjsu.cmpe.voting.domain;
 
-public class Poll {
+public class PollDetails {
 
 	private String uniqueKey;
 	private String question;
 	private String option1;
 	private String option2;
-	private String answer;
 	private int option1Count;
 	private int option2Count;
+
+	public PollDetails(Poll poll) {
+		// TODO Auto-generated constructor stub
+		this.uniqueKey = poll.getUniqueKey();
+		this.question = poll.getQuestion();
+		this.option1 = poll.getOption1();
+		this.option2 = poll.getOption2();
+		this.option1Count = poll.getOption1Count();
+		this.option2Count = poll.getOption2Count();
+	}
 
 	/**
 	 * @return the question
@@ -101,20 +110,6 @@ public class Poll {
 	 */
 	public void setOption2(String option2) {
 		this.option2 = option2;
-	}
-
-	/**
-	 * @return the answer
-	 */
-	public String getAnswer() {
-		return answer;
-	}
-
-	/**
-	 * @param answer the answer to set
-	 */
-	public void setAnswer(String answer) {
-		this.answer = answer;
 	}
 
 }
