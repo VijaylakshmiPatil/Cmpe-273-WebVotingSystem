@@ -2,14 +2,11 @@ package edu.sjsu.cmpe.voting.repository;
 
 import edu.sjsu.cmpe.voting.domain.Poll;
 
-public class VotingRepositoryInterface {
+public interface VotingRepositoryInterface {
 
+	Poll savePoll(Poll newPoll);
+
+	Poll getPollbyKey(String key);
 	
-
-	
-	public Poll saveVote(Poll request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	void updatePoll(String key, String answer);
 }
