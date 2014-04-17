@@ -19,6 +19,9 @@
 		url:"/voting/poll",
 		data: JSON.stringify(poll),
 		contentType: "application/json",
+		success : function (response) {
+            alert("Poll Successfully Created. Your Poll ID is : " + response);
+        },
 		statusCode:{
 		200: function() {
       		alert( "Poll Created" );
