@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe.voting.repository;
 
+import java.util.ArrayList;
+
 import edu.sjsu.cmpe.voting.domain.Poll;
 
 public interface VotingRepositoryInterface {
@@ -17,4 +19,6 @@ public interface VotingRepositoryInterface {
 	Poll getPollbyKey(String key);
 	
 	void updatePoll(String key, String answer);
+	
+	ArrayList<Poll> getAllPolls();
 }
