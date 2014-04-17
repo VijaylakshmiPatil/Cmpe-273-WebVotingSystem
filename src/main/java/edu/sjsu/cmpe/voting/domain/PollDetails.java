@@ -9,7 +9,7 @@ package edu.sjsu.cmpe.voting.domain;
  */
 public class PollDetails {
 
-	private String uniqueKey;
+	private String _id;
 	private String question;
 	private String option1;
 	private String option2;
@@ -18,12 +18,12 @@ public class PollDetails {
 
 	public PollDetails(Poll poll) {
 		// TODO Auto-generated constructor stub
-		this.uniqueKey = poll.getUniqueKey();
-		this.question = poll.getQuestion();
-		this.option1 = poll.getOption1();
-		this.option2 = poll.getOption2();
-		this.option1Count = poll.getOption1Count();
-		this.option2Count = poll.getOption2Count();
+//		this._id = poll.getUniqueKey();
+//		this.question = poll.getQuestion();
+//		this.option1 = poll.getOption1();
+//		this.option2 = poll.getOption2();
+//		this.option1Count = poll.getOption1Count();
+//		this.option2Count = poll.getOption2Count();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class PollDetails {
 	 * @return the uniqueKey
 	 */
 	public String getUniqueKey() {
-		return uniqueKey;
+		return _id;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class PollDetails {
 	 *            the uniqueKey to set
 	 */
 	public void setUniqueKey(String uniqueKey) {
-		this.uniqueKey = uniqueKey;
+		this._id = uniqueKey;
 	}
 
 	/**

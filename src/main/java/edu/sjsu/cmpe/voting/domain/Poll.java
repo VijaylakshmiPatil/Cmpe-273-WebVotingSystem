@@ -3,14 +3,23 @@
  */
 package edu.sjsu.cmpe.voting.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Poll {
 
-	private String uniqueKey;
+	//@JsonProperty("id")
+	private String id;
+	//@JsonProperty("question")
 	private String question;
+	//@JsonProperty("option1")
 	private String option1;
+	//@JsonProperty("option2")
 	private String option2;
-	private String answer;
+	
+	//private String answer;
+	//@JsonProperty("option1Count")
 	private int option1Count;
+	//@JsonProperty("option2Count")
 	private int option2Count;
 
 	/**
@@ -58,21 +67,7 @@ public class Poll {
 		this.option2Count = noCount;
 	}
 
-	/**
-	 * @return the uniqueKey
-	 */
-	public String getUniqueKey() {
-		return uniqueKey;
-	}
-
-	/**
-	 * @param uniqueKey
-	 *            the uniqueKey to set
-	 */
-	public void setUniqueKey(String uniqueKey) {
-		this.uniqueKey = uniqueKey;
-	}
-
+	
 	/**
 	 * @return the option1
 	 */
@@ -104,17 +99,31 @@ public class Poll {
 	}
 
 	/**
-	 * @return the answer
+	 * @return the id
 	 */
-	public String getAnswer() {
-		return answer;
+	public String getId() {
+		return id;
 	}
 
 	/**
-	 * @param answer the answer to set
+	 * @param id the id to set
 	 */
-	public void setAnswer(String answer) {
-		this.answer = answer;
+	public void setId(String id) {
+		this.id = id;
 	}
+
+//	/**
+//	 * @return the answer
+//	 */
+//	public String getAnswer() {
+//		return answer;
+//	}
+//
+//	/**
+//	 * @param answer the answer to set
+//	 */
+//	public void setAnswer(String answer) {
+//		this.answer = answer;
+//	}
 
 }
