@@ -49,14 +49,14 @@ public class VoteResource {
 	@Timed(name = "view-poll")
 	public PollDto getBookByIsbn(@PathParam("key") String key) {
 		Poll poll = voteRepository.getPollbyKey(key);
-		PollDetails pollDetails = new PollDetails(poll);
-		PollDto pollResponse = new PollDto(pollDetails);
+		//PollDetails pollDetails = new PollDetails(poll);
+		PollDto pollResponse = new PollDto(poll);
 		pollResponse.addLink(new LinkDto("view-poll", "/poll/"
-				+ poll.getUniqueKey(), "GET"));
+				+ poll.getId(), "GET"));
 		pollResponse.addLink(new LinkDto("answer-poll", "/poll/"
-				+ poll.getUniqueKey(), "PUT"));
+				+ poll.getId(), "PUT"));
 		pollResponse.addLink(new LinkDto("delete-poll", "/poll/"
-				+ poll.getUniqueKey(), "DELETE"));
+				+ poll.getId(), "DELETE"));
 
 		return pollResponse;
 	}
@@ -67,7 +67,7 @@ public class VoteResource {
 
 		Poll savedPoll = voteRepository.savePoll(request);
 
-		String location = "/poll/" + savedPoll.getUniqueKey();
+		String location = "/poll/" + savedPoll.getId();
 		LinksDto voteResponse = new LinksDto();
 		voteResponse.addLink(new LinkDto("view-poll", location, "GET"));
 		voteResponse.addLink(new LinkDto("answer-poll", location, "PUT"));
@@ -89,11 +89,11 @@ public class VoteResource {
 			
 			LinksDto pollResponse = new LinksDto();
 			pollResponse.addLink(new LinkDto("view-poll", "/poll/"
-					+ poll.getUniqueKey(), "GET"));
+					+ poll.getId(), "GET"));
 			pollResponse.addLink(new LinkDto("answer-poll", "/poll/"
-					+ poll.getUniqueKey(), "PUT"));
+					+ poll.getId(), "PUT"));
 			pollResponse.addLink(new LinkDto("delete-poll", "/poll/"
-					+ poll.getUniqueKey(), "DELETE"));
+					+ poll.getId(), "DELETE"));
 
 			return Response.status(200).entity(pollResponse).build();
 		}else{
