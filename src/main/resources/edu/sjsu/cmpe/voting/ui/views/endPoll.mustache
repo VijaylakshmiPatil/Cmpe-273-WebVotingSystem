@@ -112,73 +112,117 @@
         }
     
     function FBLogin() {
-             FB.getLoginStatus(function (response) {
-                 if (response.status === 'connected') {
-                     // the user is logged in and has authenticated your
-                     // app, and response.authResponse supplies
-                     // the user's ID, a valid access token, a signed
-                     // request, and the time the access token 
-                     // and signed request each expire
-                     var uid = response.authResponse.userID;
-                     var accessToken = response.authResponse.accessToken;
-                     FB.logout(function (response) {
-                         // user is now logged out
-                         window.location.href = "/voting/";
-                     });
-                 } else if (response.status === 'not_authorized') {
-                     // the user is logged in to Facebook, 
-                     // but has not authenticated your app
-                 } else {
-                     // the user isn't logged in to Facebook.
-                     FB.login(function (loginResponse) {
-                         if (loginResponse.authResponse) {
-                             FB.api('/me', function (loginResponse) {
-                                 console.log(loginResponse);
-                                 var uid = loginResponse.id;
-                                 var userDetails = {
-                                     id : loginResponse.id,
-                                     name: loginResponse.name,
-                                     first_name: loginResponse.first_name,
-                                     last_name: loginResponse.last_name,
-                                     email: loginResponse.email,
-                                     gender: loginResponse.gender,
-                                 };
-                                 $.ajax({
-                                     type: "POST",
-                                     url: "/voting/",
-                                     data: JSON.stringify(userDetails),
-                                     contentType: "application/json",
-                                     success: function (resp) {
-                                         alert('user id : ' + uid);
-                                         window.location.href = "/voting/"+uid;
-                                     },
-                                     statusCode: {
-                                         200: function () {
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    // the user is logged in and has authenticated your
+                    // app, and response.authResponse supplies
+                    // the user's ID, a valid access token, a signed
+                    // request, and the time the access token 
+                    // and signed request each expire
+                    var uid = response.authResponse.userID;
+                    var accessToken = response.authResponse.accessToken;
+                    FB.logout(function (response) {
+                        // user is now logged out
+                        window.location.href = "/voting/";
+                    });
+                } else if (response.status === 'not_authorized') {
+                    // the user is logged in to Facebook, 
+                    // but has not authenticated your app
+                    FB.login(function (loginResponse) {
+                        if (loginResponse.authResponse) {
+                            FB.api('/me', function (loginResponse) {
+                                //console.log(loginResponse);
+                                var uid = loginResponse.id;
+                                var userDetails = {
+                                    id : loginResponse.id,
+                                    name: loginResponse.name,
+                                    first_name: loginResponse.first_name,
+                                    last_name: loginResponse.last_name,
+                                    email: loginResponse.email,
+                                    gender: loginResponse.gender,
+                                };
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/voting/",
+                                    data: JSON.stringify(userDetails),
+                                    contentType: "application/json",
+                                    success: function (resp) {
+                                        window.location.href = "/voting/"+uid;
+                                    },
+                                    statusCode: {
+                                        200: function () {
 
-                                         },
-                                         201: function () {
+                                        },
+                                        201: function () {
 
-                                         },
-                                         404: function () {
-                                             alert("Page Not Found");
+                                        },
+                                        404: function () {
+                                            alert("Page Not Found");
 
-                                         },
-                                         500: function () {
-                                             alert("Error Creating User");
+                                        },
+                                        500: function () {
+                                            alert("Error Creating User");
 
-                                         }
-                                     }
-                                 });
+                                        }
+                                    }
+                                });
                                  
-                             });
-                         } else {
-                             console.log('User cancelled login or did not fully authorize.');
-                         }
-                     }, { scope: 'email' });
-                 }
-             });
-         };
-    
+                            });
+                        } else {
+                            //console.log('User cancelled login or did not fully authorize.');
+                            alert("Please authorize the app");
+                        }
+                    }, { scope: 'email' });
+                        } else {
+                            // the user isn't logged in to Facebook.
+                            FB.login(function (loginResponse) {
+                                if (loginResponse.authResponse) {
+                                    FB.api('/me', function (loginResponse) {
+                                        //console.log(loginResponse);
+                                        var uid = loginResponse.id;
+                                        var userDetails = {
+                                            id : loginResponse.id,
+                                            name: loginResponse.name,
+                                            first_name: loginResponse.first_name,
+                                            last_name: loginResponse.last_name,
+                                            email: loginResponse.email,
+                                            gender: loginResponse.gender,
+                                        };
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/voting/",
+                                            data: JSON.stringify(userDetails),
+                                            contentType: "application/json",
+                                            success: function (resp) {
+                                                window.location.href = "/voting/"+uid;
+                                            },
+                                            statusCode: {
+                                                200: function () {
+
+                                                },
+                                                201: function () {
+
+                                                },
+                                                404: function () {
+                                                    alert("Page Not Found");
+
+                                                },
+                                                500: function () {
+                                                    alert("Error Creating User");
+
+                                                }
+                                            }
+                                        });
+                                 
+                                    });
+                                } else {
+                                    //console.log('User cancelled login or did not fully authorize.');
+                                    alert("Please authorize the app");
+                                }
+                            }, { scope: 'email' });
+                        }
+                    });
+                };
     
     var color = "#F71313";
         var default_color = "#ACB6C0";

@@ -55,7 +55,8 @@ public class AmazonSES {
 
 		StringBuilder option = new StringBuilder();
 		for(int i=0; i<poll.getOptions().size();i++){
-			option.append("Option " + i + " : " + poll.getOptions().get(i).getOption() + "\n");
+			int x = i + 1;
+			option.append("Option " + x + " : " + poll.getOptions().get(i).getOption() + "\n");
 		}
 		BODY = "Poll ID:" + poll.getId()+"\n" + "Question: " + poll.getQuestion() + "\n" + option.toString() + "Start Date :" + poll.getStartDate() +"\n" +"End Date :" + poll.getEndDate();
 		
@@ -191,7 +192,8 @@ public class AmazonSES {
 		
 		StringBuilder option = new StringBuilder();
 		for(int i=0; i<poll.getOptions().size();i++){
-			option.append("Option " + i+1 + " : " + poll.getOptions().get(i).getOption() + "  --> Count is : " + poll.getOptions().get(i).getCount() + "\n");
+			int x = i + 1;
+			option.append("Option " + x + " : " + poll.getOptions().get(i).getOption() + "  --> Count is : " + poll.getOptions().get(i).getCount() + "\n");
 		}
 		BODY = "Poll ID:" + poll.getId()+"\n" + "Question: " + poll.getQuestion() + "\n" + option.toString() + "Start Date :" + poll.getStartDate() +"\n" +"End Date :" + poll.getEndDate();
 		
