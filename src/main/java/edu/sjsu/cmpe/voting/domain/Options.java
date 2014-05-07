@@ -3,12 +3,16 @@
  */
 package edu.sjsu.cmpe.voting.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author parthkathuria
  *
  */
 public class Options {
+	@JsonProperty("option")
 	private String option;
+	@JsonProperty("count")
 	private int count;
 	/**
 	 * @return the option
