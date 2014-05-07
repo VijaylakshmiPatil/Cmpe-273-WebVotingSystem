@@ -3,25 +3,29 @@
  */
 package edu.sjsu.cmpe.voting.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import org.joda.time.format.ISODateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 public class Poll {
 
 	//@JsonProperty("id")
 	private String id;
-	//@JsonProperty("question")
+	@JsonProperty("question")
 	private String question;
-	//@JsonProperty("option1")
-	private String option1;
-	//@JsonProperty("option2")
-	private String option2;
+	@JsonProperty("options")
+	private ArrayList<Options> options = new ArrayList<Options>();
+	@JsonProperty("startDate")
+	private String startDate;
+	@JsonProperty("endDate")
+	private String endDate;
+	@JsonProperty("userId")
+	private String userId;
 	
-	//private String answer;
-	//@JsonProperty("option1Count")
-	private int option1Count;
-	//@JsonProperty("option2Count")
-	private int option2Count;
-
 	/**
 	 * @return the question
 	 */
@@ -37,67 +41,7 @@ public class Poll {
 		this.question = question;
 	}
 
-	/**
-	 * @return the yesCount
-	 */
-	public int getOption1Count() {
-		return option1Count;
-	}
-
-	/**
-	 * @param yesCount
-	 *            the yesCount to set
-	 */
-	public void setOption1Count(int yesCount) {
-		this.option1Count = yesCount;
-	}
-
-	/**
-	 * @return the noCount
-	 */
-	public int getOption2Count() {
-		return option2Count;
-	}
-
-	/**
-	 * @param noCount
-	 *            the noCount to set
-	 */
-	public void setOption2Count(int noCount) {
-		this.option2Count = noCount;
-	}
-
 	
-	/**
-	 * @return the option1
-	 */
-	public String getOption1() {
-		return option1;
-	}
-
-	/**
-	 * @param option1
-	 *            the option1 to set (Yes)
-	 */
-	public void setOption1(String option1) {
-		this.option1 = option1;
-	}
-
-	/**
-	 * @return the option2
-	 */
-	public String getOption2() {
-		return option2;
-	}
-
-	/**
-	 * @param option2
-	 *            the option2 to set (No)
-	 */
-	public void setOption2(String option2) {
-		this.option2 = option2;
-	}
-
 	/**
 	 * @return the id
 	 */
@@ -112,18 +56,60 @@ public class Poll {
 		this.id = id;
 	}
 
-//	/**
-//	 * @return the answer
-//	 */
-//	public String getAnswer() {
-//		return answer;
-//	}
-//
-//	/**
-//	 * @param answer the answer to set
-//	 */
-//	public void setAnswer(String answer) {
-//		this.answer = answer;
-//	}
+	/**
+	 * @return the options
+	 */
+	public ArrayList<Options> getOptions() {
+		return options;
+	}
+
+	/**
+	 * @param options the options to set
+	 */
+	public void setOptions(ArrayList<Options> options) {
+		this.options = options;
+	}
+
+	/**
+	 * @return the startDate
+	 */
+	public String getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
+	 * @return the endDate
+	 */
+	public String getEndDate() {
+		return endDate;
+	}
+
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 }
