@@ -83,8 +83,14 @@ public class VoteResource {
 			@QueryParam("answer") String answer) {
 		Poll poll = voteRepository.getPollbyKey(key);
 
-		if (answer.equalsIgnoreCase(poll.getOption1())
-				|| answer.equalsIgnoreCase(poll.getOption2())) {
+		boolean ok = false;
+		for(int i=0;i<poll.getOptions().size(); i++){
+			if(answer.equalsIgnoreCase(poll.getOptions().get(i).getOption())){
+				ok = true;
+			}
+		}
+		
+		if (ok) {
 			voteRepository.updatePoll(key, answer);
 			
 			LinksDto pollResponse = new LinksDto();
