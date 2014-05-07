@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
@@ -27,7 +28,7 @@ import edu.sjsu.cmpe.voting.domain.Poll;
 public class VotingRepository implements VotingRepositoryInterface {
 
 	/** In-memory map to store polls. (Key, Value) -> (PollKey, Poll) */
-	private final ConcurrentHashMap<String, Poll> pollInMemoryMap;
+	//private final ConcurrentHashMap<String, Poll> pollInMemoryMap;
 	static Random rnd;
 	// Characters used to generate unique 4 letter key.
 	static final String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -37,7 +38,7 @@ public class VotingRepository implements VotingRepositoryInterface {
 	/** Constructor to create a Voting Repository */
 	public VotingRepository() {
 		// checkNotNull(pollMap, "bookMap must not be null for BookRepository");
-		pollInMemoryMap = null;
+		//pollInMemoryMap = null;
 		pollKey = 0;
 
 	}
@@ -54,7 +55,6 @@ public class VotingRepository implements VotingRepositoryInterface {
 		StringBuilder sb = new StringBuilder(len);
 		for (int i = 0; i < len; i++)
 			sb.append(characters.charAt(rnd.nextInt(characters.length())));
-		System.out.println("Key : " + sb);
 		// Checking uniqueness of the Key generated
 		Poll poll = getPollbyKey(sb.toString());
 		if (poll == null)
@@ -70,16 +70,20 @@ public class VotingRepository implements VotingRepositoryInterface {
 		checkNotNull(newPoll, "Poll instance cannot be null");
 		String key = generatePollKey();
 		newPoll.setId(key);
-		DBObject pollInMemory = new BasicDBObject("_id", newPoll.getId());
-		pollInMemory.put("question", newPoll.getQuestion());
-		pollInMemory.put("option1", newPoll.getOption1());
-		pollInMemory.put("option2", newPoll.getOption2());
-		pollInMemory.put("option1Count", newPoll.getOption1Count());
-		pollInMemory.put("option2Count", newPoll.getOption2Count());
+		BasicDBObject pollInMemory = new BasicDBObject("_id", newPoll.getId());
+		pollInMemory.append("question", newPoll.getQuestion());
+		pollInMemory.append("options", new ArrayList());
+		pollInMemory.append("startDate", newPoll.getStartDate());
+		pollInMemory.append("endDate",newPoll.getEndDate());
+		pollInMemory.append("userId", newPoll.getUserId());
 		try {
 			DB db = mongoConnection();
 			DBCollection poll = db.getCollection("poll");
 			poll.insert(pollInMemory);
+			for(int i = 0; i < newPoll.getOptions().size();i++){
+				BasicDBObject options = new BasicDBObject("option",newPoll.getOptions().get(i).getOption()).append("count", newPoll.getOptions().get(i).getCount());
+				poll.update(new BasicDBObject("_id",key), new BasicDBObject("$push", new BasicDBObject("options", options)));
+			}
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,15 +106,21 @@ public class VotingRepository implements VotingRepositoryInterface {
 			// System.out.println("Poll object " + pollObj);
 
 			if (pollObj != null) {
-				// System.out.println(pollObj.get("_id").toString());
+
 				poll.setId(pollObj.get("_id").toString());
 				poll.setQuestion(pollObj.get("question").toString());
-				poll.setOption1(pollObj.get("option1").toString());
-				poll.setOption2(pollObj.get("option2").toString());
-				poll.setOption1Count((Integer) pollObj.get("option1Count"));
-				poll.setOption2Count((Integer) pollObj.get("option2Count"));
+				poll.setStartDate(pollObj.get("startDate").toString());
+				poll.setEndDate(pollObj.get("endDate").toString());
+				ArrayList<DBObject> optionsObj = (ArrayList<DBObject>) pollObj.get("options");
+				ArrayList<Options> options = new ArrayList<Options>();
+				for (int i = 0; i < optionsObj.size(); i++) {
+					Options op = new Options();
+					op.setOption(optionsObj.get(i).get("option").toString());
+					op.setCount((Integer) optionsObj.get(i).get("count"));
+					options.add(op);
+				}
+				poll.setOptions(options);
 				// poll1.setAnswer(pollObj.get("answer").toString());
-				System.out.println("Poll " + poll);
 				return poll;
 			} else {
 				return null;
@@ -132,6 +142,7 @@ public class VotingRepository implements VotingRepositoryInterface {
 		checkNotNull(key, "Key instance cannot be null");
 		DB db;
 		Poll poll = new Poll();
+		
 		try {
 			db = mongoConnection();
 			DBCollection pollColl = db.getCollection("poll");
@@ -139,32 +150,32 @@ public class VotingRepository implements VotingRepositoryInterface {
 
 			poll.setId(pollObj.get("_id").toString());
 			poll.setQuestion(pollObj.get("question").toString());
-			poll.setOption1(pollObj.get("option1").toString());
-			poll.setOption2(pollObj.get("option2").toString());
-			poll.setOption1Count((Integer) pollObj.get("option1Count"));
-			poll.setOption2Count((Integer) pollObj.get("option2Count"));
-			// poll.setAnswer(pollObj.get("answer").toString());
-			// checkNotNull(poll, "Poll instance cannot be null");
+			poll.setStartDate(pollObj.get("startDate").toString());
+			poll.setEndDate(pollObj.get("endDate").toString());
+			poll.setUserId(pollObj.get("userId").toString());
+			ArrayList<DBObject> optionsObj = (ArrayList<DBObject>) pollObj.get("options");
+			ArrayList<Options> options = new ArrayList<Options>();
+			for (int i = 0; i < optionsObj.size(); i++) {
+				Options op = new Options();
+				op.setOption(optionsObj.get(i).get("option").toString());
+				op.setCount((Integer) optionsObj.get(i).get("count"));
+				options.add(op);
+			}
+			poll.setOptions(options);
 			// Option 1 selection (Yes) Incrementing the option count by 1,
 			// everytime it is selected
-			if (answer.equalsIgnoreCase(poll.getOption1())) {
-				int count = poll.getOption1Count();
-				poll.setOption1Count(++count);
+			for (int i = 0; i < options.size(); i++) {
+				if (answer.equalsIgnoreCase(poll.getOptions().get(i)
+						.getOption())) {
+					int count = poll.getOptions().get(i).getCount();
+					poll.getOptions().get(i).setCount(++count);
+					pollColl.update(
+							new BasicDBObject("_id", poll.getId()).append("options.option", poll.getOptions().get(i).getOption()),
+							new BasicDBObject("$set", new BasicDBObject("options.$.count",poll.getOptions().get(i).getCount())), false, false);
+				}
 			}
-			// Option 2 selection (No) Incrementing the option count by 1,
-			// everytime it is selected
-			else if (answer.equalsIgnoreCase(poll.getOption2())) {
-				int count = poll.getOption2Count();
-				System.out.println("Count=" + count);
-				poll.setOption2Count(++count);
-			}
-			pollColl.update(
-					new BasicDBObject("_id", poll.getId()),
-					new BasicDBObject("$set", new BasicDBObject("option1Count",
-							poll.getOption1Count()).append("option2Count",
-							poll.getOption2Count())), false, false);
+			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -183,7 +194,6 @@ public class VotingRepository implements VotingRepositoryInterface {
 			DB db = mongoConnection();
 			DBCollection pollColl = db.getCollection("poll");
 			DBCursor cursor = pollColl.find();
-			// System.out.println(cursor);
 			for (int i = 0; i < cursor.size(); i++) {
 				if (cursor.hasNext()) {
 					DBObject pollObject = cursor.next();
@@ -191,29 +201,48 @@ public class VotingRepository implements VotingRepositoryInterface {
 						Poll p = new Poll();
 						p.setId(pollObject.get("_id").toString());
 						p.setQuestion(pollObject.get("question").toString());
-						p.setOption1(pollObject.get("option1").toString());
-						p.setOption2(pollObject.get("option2").toString());
-						p.setOption1Count((Integer) pollObject
-								.get("option1Count"));
-						p.setOption2Count((Integer) pollObject
-								.get("option2Count"));
-						System.out.println(p.getQuestion());
+						p.setStartDate(pollObject.get("startDate").toString());
+						p.setEndDate(pollObject.get("endDate").toString());
+						p.setUserId(pollObject.get("userId").toString());
+						ArrayList<DBObject> optionsObj = (ArrayList<DBObject>) pollObject.get("options");
+						ArrayList<Options> options = new ArrayList<Options>();
+						for (int j = 0; j < optionsObj.size(); j++) {
+							Options op = new Options();
+							op.setOption(optionsObj.get(j).get("option").toString());
+							op.setCount((Integer) optionsObj.get(j).get("count"));
+							options.add(op);
+						}
+						p.setOptions(options);
 						poll.add(p);
+						return poll;
 					}
 
-				} else {
-					break;
 				}
 			}
-			for (int j = 0; j < poll.size(); j++) {
-				System.out.println(poll.get(j).getId());
-			}
-			return poll;
+			
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
+		return null;
+	}
+
+	public void deletePoll(String pollId) {
+		// TODO Auto-generated method stub
+		try {
+			DB db = mongoConnection();
+			DBCollection pollColl = db.getCollection("poll");
+			
+			DBObject poll = pollColl.findOne(new BasicDBObject("_id",pollId));
+			if(poll != null){
+				pollColl.remove(new BasicDBObject("_id",pollId));
+			}
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
